@@ -540,6 +540,14 @@ class canvastransform extends basetransform {
     
     private var sizepercentField : sizepercent;
     
+    private var alignhorizontalField : System.String;
+    
+    private var alignverticalField : System.String;
+    
+    private var stretchtoparentField : System.Boolean;
+    
+    private var stretchtoparentFieldSpecified : System.Boolean;
+    
     ///<remarks/>
     public final System.Xml.Serialization.XmlElementAttribute("position-percent") 
     function get positionpercent() : positionpercent {
@@ -556,6 +564,42 @@ class canvastransform extends basetransform {
     }
     public final function set sizepercent(value : sizepercent) {
         this.sizepercentField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("align-horizontal") 
+    function get alignhorizontal() : System.String {
+        return this.alignhorizontalField;
+    }
+    public final function set alignhorizontal(value : System.String) {
+        this.alignhorizontalField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("align-vertical") 
+    function get alignvertical() : System.String {
+        return this.alignverticalField;
+    }
+    public final function set alignvertical(value : System.String) {
+        this.alignverticalField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("stretch-to-parent") 
+    function get stretchtoparent() : System.Boolean {
+        return this.stretchtoparentField;
+    }
+    public final function set stretchtoparent(value : System.Boolean) {
+        this.stretchtoparentField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlIgnoreAttribute() 
+    function get stretchtoparentSpecified() : System.Boolean {
+        return this.stretchtoparentFieldSpecified;
+    }
+    public final function set stretchtoparentSpecified(value : System.Boolean) {
+        this.stretchtoparentFieldSpecified = value;
     }
 }
 
@@ -987,9 +1031,44 @@ class voxel extends entity {
 public System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0") System.SerializableAttribute() System.Diagnostics.DebuggerStepThroughAttribute() System.ComponentModel.DesignerCategoryAttribute("code") System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.fivesqd.com/schemas/veml/3.0") 
 class text extends entity {
     
+    private var colorField : System.String;
+    
     private var text1Field : System.String;
     
     private var fontsizeField : float;
+    
+    private var fontField : System.String;
+    
+    private var boldField : System.Boolean;
+    
+    private var boldFieldSpecified : System.Boolean;
+    
+    private var italicField : System.Boolean;
+    
+    private var italicFieldSpecified : System.Boolean;
+    
+    private var underlineField : System.Boolean;
+    
+    private var underlineFieldSpecified : System.Boolean;
+    
+    private var strikethroughField : System.Boolean;
+    
+    private var strikethroughFieldSpecified : System.Boolean;
+    
+    private var textalignhorizontalField : System.String;
+    
+    private var textalignverticalField : System.String;
+    
+    private var textwrapField : System.String;
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("color") 
+    function get color() : System.String {
+        return this.colorField;
+    }
+    public final function set color(value : System.String) {
+        this.colorField = value;
+    }
     
     ///<remarks/>
     public final System.Xml.Serialization.XmlAttributeAttribute("text") 
@@ -1007,6 +1086,114 @@ class text extends entity {
     }
     public final function set fontsize(value : float) {
         this.fontsizeField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("font") 
+    function get font() : System.String {
+        return this.fontField;
+    }
+    public final function set font(value : System.String) {
+        this.fontField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("bold") 
+    function get bold() : System.Boolean {
+        return this.boldField;
+    }
+    public final function set bold(value : System.Boolean) {
+        this.boldField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlIgnoreAttribute() 
+    function get boldSpecified() : System.Boolean {
+        return this.boldFieldSpecified;
+    }
+    public final function set boldSpecified(value : System.Boolean) {
+        this.boldFieldSpecified = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("italic") 
+    function get italic() : System.Boolean {
+        return this.italicField;
+    }
+    public final function set italic(value : System.Boolean) {
+        this.italicField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlIgnoreAttribute() 
+    function get italicSpecified() : System.Boolean {
+        return this.italicFieldSpecified;
+    }
+    public final function set italicSpecified(value : System.Boolean) {
+        this.italicFieldSpecified = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("underline") 
+    function get underline() : System.Boolean {
+        return this.underlineField;
+    }
+    public final function set underline(value : System.Boolean) {
+        this.underlineField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlIgnoreAttribute() 
+    function get underlineSpecified() : System.Boolean {
+        return this.underlineFieldSpecified;
+    }
+    public final function set underlineSpecified(value : System.Boolean) {
+        this.underlineFieldSpecified = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("strikethrough") 
+    function get strikethrough() : System.Boolean {
+        return this.strikethroughField;
+    }
+    public final function set strikethrough(value : System.Boolean) {
+        this.strikethroughField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlIgnoreAttribute() 
+    function get strikethroughSpecified() : System.Boolean {
+        return this.strikethroughFieldSpecified;
+    }
+    public final function set strikethroughSpecified(value : System.Boolean) {
+        this.strikethroughFieldSpecified = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("text-align-horizontal") 
+    function get textalignhorizontal() : System.String {
+        return this.textalignhorizontalField;
+    }
+    public final function set textalignhorizontal(value : System.String) {
+        this.textalignhorizontalField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("text-align-vertical") 
+    function get textalignvertical() : System.String {
+        return this.textalignverticalField;
+    }
+    public final function set textalignvertical(value : System.String) {
+        this.textalignverticalField = value;
+    }
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("text-wrap") 
+    function get textwrap() : System.String {
+        return this.textwrapField;
+    }
+    public final function set textwrap(value : System.String) {
+        this.textwrapField = value;
     }
 }
 
@@ -1127,7 +1314,18 @@ class input extends entity {
 public System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0") System.SerializableAttribute() System.Diagnostics.DebuggerStepThroughAttribute() System.ComponentModel.DesignerCategoryAttribute("code") System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.fivesqd.com/schemas/veml/3.0") 
 class button extends entity {
     
+    private var colorField : System.String;
+    
     private var onclickeventField : System.String;
+    
+    ///<remarks/>
+    public final System.Xml.Serialization.XmlAttributeAttribute("color") 
+    function get color() : System.String {
+        return this.colorField;
+    }
+    public final function set color(value : System.String) {
+        this.colorField = value;
+    }
     
     ///<remarks/>
     public final System.Xml.Serialization.XmlAttributeAttribute("on-click-event") 

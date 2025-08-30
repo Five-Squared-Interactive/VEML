@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<veml xmlns="http://www.fivesqd.com/schemas/veml/3.0">
+    <metadata>
+        <title>UI Element Enhancements Demo</title>
+    </metadata>
+    <environment>
+        <background>
+            <color>#F8F9FA</color>
+        </background>
+        
+        <!-- Canvas container for UI elements -->
+        <entity tag="ui-canvas">
+            <transform>
+                <position x="0" y="0" z="0" />
+                <scale x="1" y="1" z="1" />
+            </transform>
+            <entity>
+                <canvasentity>
+                    
+                    <!-- Header text with enhanced styling -->
+                    <entity tag="header">
+                        <transform align-horizontal="center" align-vertical="top">
+                            <position-percent x="0.5" y="0.9" />
+                            <size-percent x="0.8" y="0.1" />
+                        </transform>
+                        <entity>
+                            <textentity text="Enhanced UI Demo" font-size="0.15" font="Arial" 
+                                       bold="true" text-align-horizontal="center" color="#2C3E50">
+                            </textentity>
+                        </entity>
+                    </entity>
+                    
+                    <!-- Styled text examples -->
+                    <entity tag="text-examples">
+                        <transform align-horizontal="left" align-vertical="center">
+                            <position-percent x="0.1" y="0.7" />
+                            <size-percent x="0.35" y="0.4" />
+                        </transform>
+                        
+                        <!-- Bold italic text -->
+                        <entity tag="bold-italic-text">
+                            <transform>
+                                <position-percent x="0" y="0.8" />
+                                <size-percent x="1.0" y="0.15" />
+                            </transform>
+                            <entity>
+                                <textentity text="Bold &amp; Italic Text" font-size="0.08" 
+                                           bold="true" italic="true" text-align-horizontal="left" color="#E74C3C">
+                                </textentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Underlined text -->
+                        <entity tag="underlined-text">
+                            <transform>
+                                <position-percent x="0" y="0.6" />
+                                <size-percent x="1.0" y="0.15" />
+                            </transform>
+                            <entity>
+                                <textentity text="Underlined Text" font-size="0.08" 
+                                           underline="true" text-align-horizontal="left" color="#3498DB">
+                                </textentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Strikethrough text -->
+                        <entity tag="strikethrough-text">
+                            <transform>
+                                <position-percent x="0" y="0.4" />
+                                <size-percent x="1.0" y="0.15" />
+                            </transform>
+                            <entity>
+                                <textentity text="Strikethrough Text" font-size="0.08" 
+                                           strikethrough="true" text-align-horizontal="left" color="#95A5A6">
+                                </textentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Wrapped text -->
+                        <entity tag="wrapped-text">
+                            <transform stretch-to-parent="true">
+                                <position-percent x="0" y="0.0" />
+                                <size-percent x="1.0" y="0.3" />
+                            </transform>
+                            <entity>
+                                <textentity text="This is a longer text that demonstrates text wrapping functionality. It should wrap nicely within the container." 
+                                           font-size="0.06" text-wrap="wrap" 
+                                           text-align-horizontal="left" text-align-vertical="top" color="#2E86C1">
+                                </textentity>
+                            </entity>
+                        </entity>
+                    </entity>
+                    
+                    <!-- Button examples -->
+                    <entity tag="button-examples">
+                        <transform align-horizontal="right" align-vertical="center">
+                            <position-percent x="0.55" y="0.7" />
+                            <size-percent x="0.35" y="0.4" />
+                        </transform>
+                        
+                        <!-- Red button with center alignment -->
+                        <entity tag="red-button">
+                            <transform align-horizontal="center">
+                                <position-percent x="0.5" y="0.8" />
+                                <size-percent x="0.8" y="0.15" />
+                            </transform>
+                            <entity>
+                                <buttonentity on-click-event="redButtonClick" color="#E74C3C">
+                                    <entity>
+                                        <textentity text="Red Button" font-size="0.08" 
+                                                   bold="true" text-align-horizontal="center" color="white">
+                                        </textentity>
+                                    </entity>
+                                </buttonentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Blue button with left alignment -->
+                        <entity tag="blue-button">
+                            <transform align-horizontal="left">
+                                <position-percent x="0.1" y="0.6" />
+                                <size-percent x="0.8" y="0.15" />
+                            </transform>
+                            <entity>
+                                <buttonentity on-click-event="blueButtonClick" color="#3498DB">
+                                    <entity>
+                                        <textentity text="Blue Button" font-size="0.08" 
+                                                   text-align-horizontal="center" color="white">
+                                        </textentity>
+                                    </entity>
+                                </buttonentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Green stretched button -->
+                        <entity tag="green-button">
+                            <transform stretch-to-parent="true">
+                                <position-percent x="0.1" y="0.4" />
+                                <size-percent x="0.8" y="0.15" />
+                            </transform>
+                            <entity>
+                                <buttonentity on-click-event="greenButtonClick" color="#27AE60">
+                                    <entity>
+                                        <textentity text="Stretched Button" font-size="0.08" 
+                                                   text-align-horizontal="center" color="white">
+                                        </textentity>
+                                    </entity>
+                                </buttonentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Multi-styled button -->
+                        <entity tag="fancy-button">
+                            <transform align-horizontal="center">
+                                <position-percent x="0.5" y="0.2" />
+                                <size-percent x="0.8" y="0.15" />
+                            </transform>
+                            <entity>
+                                <buttonentity on-click-event="fancyButtonClick" color="#9B59B6">
+                                    <entity>
+                                        <textentity text="Fancy Button" font-size="0.08" 
+                                                   font="Arial" bold="true" italic="true"
+                                                   text-align-horizontal="center" color="#F8C471">
+                                        </textentity>
+                                    </entity>
+                                </buttonentity>
+                            </entity>
+                        </entity>
+                    </entity>
+                    
+                    <!-- Alignment showcase -->
+                    <entity tag="alignment-showcase">
+                        <transform>
+                            <position-percent x="0.1" y="0.25" />
+                            <size-percent x="0.8" y="0.2" />
+                        </transform>
+                        
+                        <entity tag="showcase-title">
+                            <transform align-horizontal="center">
+                                <position-percent x="0.5" y="0.9" />
+                                <size-percent x="1.0" y="0.2" />
+                            </transform>
+                            <entity>
+                                <textentity text="Alignment Showcase" font-size="0.1" 
+                                           bold="true" text-align-horizontal="center" color="#34495E">
+                                </textentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Left aligned text -->
+                        <entity tag="left-text">
+                            <transform align-horizontal="left" align-vertical="center">
+                                <position-percent x="0" y="0.5" />
+                                <size-percent x="0.3" y="0.4" />
+                            </transform>
+                            <entity>
+                                <textentity text="Left Aligned" font-size="0.06" 
+                                           text-align-horizontal="left" color="#E67E22">
+                                </textentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Center aligned text -->
+                        <entity tag="center-text">
+                            <transform align-horizontal="center" align-vertical="center">
+                                <position-percent x="0.5" y="0.5" />
+                                <size-percent x="0.3" y="0.4" />
+                            </transform>
+                            <entity>
+                                <textentity text="Center Aligned" font-size="0.06" 
+                                           text-align-horizontal="center" color="#16A085">
+                                </textentity>
+                            </entity>
+                        </entity>
+                        
+                        <!-- Right aligned text -->
+                        <entity tag="right-text">
+                            <transform align-horizontal="right" align-vertical="center">
+                                <position-percent x="1.0" y="0.5" />
+                                <size-percent x="0.3" y="0.4" />
+                            </transform>
+                            <entity>
+                                <textentity text="Right Aligned" font-size="0.06" 
+                                           text-align-horizontal="right" color="#8E44AD">
+                                </textentity>
+                            </entity>
+                        </entity>
+                    </entity>
+                    
+                </canvasentity>
+            </entity>
+        </entity>
+        
+    </environment>
+</veml>

@@ -685,6 +685,14 @@ public partial class canvastransform : basetransform {
     
     private sizepercent sizepercentField;
     
+    private string alignhorizontalField;
+    
+    private string alignverticalField;
+    
+    private bool stretchtoparentField;
+    
+    private bool stretchtoparentFieldSpecified;
+    
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("position-percent")]
     public positionpercent positionpercent {
@@ -704,6 +712,50 @@ public partial class canvastransform : basetransform {
         }
         set {
             this.sizepercentField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("align-horizontal")]
+    public string alignhorizontal {
+        get {
+            return this.alignhorizontalField;
+        }
+        set {
+            this.alignhorizontalField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("align-vertical")]
+    public string alignvertical {
+        get {
+            return this.alignverticalField;
+        }
+        set {
+            this.alignverticalField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("stretch-to-parent")]
+    public bool stretchtoparent {
+        get {
+            return this.stretchtoparentField;
+        }
+        set {
+            this.stretchtoparentField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool stretchtoparentSpecified {
+        get {
+            return this.stretchtoparentFieldSpecified;
+        }
+        set {
+            this.stretchtoparentFieldSpecified = value;
         }
     }
 }
@@ -1272,9 +1324,46 @@ public partial class voxel : entity {
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.fivesqd.com/schemas/veml/3.0")]
 public partial class text : entity {
     
+    private string colorField;
+    
     private string text1Field;
     
     private float fontsizeField;
+    
+    private string fontField;
+    
+    private bool boldField;
+    
+    private bool boldFieldSpecified;
+    
+    private bool italicField;
+    
+    private bool italicFieldSpecified;
+    
+    private bool underlineField;
+    
+    private bool underlineFieldSpecified;
+    
+    private bool strikethroughField;
+    
+    private bool strikethroughFieldSpecified;
+    
+    private string textalignhorizontalField;
+    
+    private string textalignverticalField;
+    
+    private string textwrapField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("color")]
+    public string color {
+        get {
+            return this.colorField;
+        }
+        set {
+            this.colorField = value;
+        }
+    }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute("text")]
@@ -1295,6 +1384,138 @@ public partial class text : entity {
         }
         set {
             this.fontsizeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("font")]
+    public string font {
+        get {
+            return this.fontField;
+        }
+        set {
+            this.fontField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("bold")]
+    public bool bold {
+        get {
+            return this.boldField;
+        }
+        set {
+            this.boldField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool boldSpecified {
+        get {
+            return this.boldFieldSpecified;
+        }
+        set {
+            this.boldFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("italic")]
+    public bool italic {
+        get {
+            return this.italicField;
+        }
+        set {
+            this.italicField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool italicSpecified {
+        get {
+            return this.italicFieldSpecified;
+        }
+        set {
+            this.italicFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("underline")]
+    public bool underline {
+        get {
+            return this.underlineField;
+        }
+        set {
+            this.underlineField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool underlineSpecified {
+        get {
+            return this.underlineFieldSpecified;
+        }
+        set {
+            this.underlineFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("strikethrough")]
+    public bool strikethrough {
+        get {
+            return this.strikethroughField;
+        }
+        set {
+            this.strikethroughField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool strikethroughSpecified {
+        get {
+            return this.strikethroughFieldSpecified;
+        }
+        set {
+            this.strikethroughFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("text-align-horizontal")]
+    public string textalignhorizontal {
+        get {
+            return this.textalignhorizontalField;
+        }
+        set {
+            this.textalignhorizontalField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("text-align-vertical")]
+    public string textalignvertical {
+        get {
+            return this.textalignverticalField;
+        }
+        set {
+            this.textalignverticalField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("text-wrap")]
+    public string textwrap {
+        get {
+            return this.textwrapField;
+        }
+        set {
+            this.textwrapField = value;
         }
     }
 }
@@ -1452,7 +1673,20 @@ public partial class input : entity {
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.fivesqd.com/schemas/veml/3.0")]
 public partial class button : entity {
     
+    private string colorField;
+    
     private string onclickeventField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("color")]
+    public string color {
+        get {
+            return this.colorField;
+        }
+        set {
+            this.colorField = value;
+        }
+    }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute("on-click-event")]

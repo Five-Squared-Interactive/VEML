@@ -349,6 +349,33 @@ Defines entity position, rotation, and scale. The transform type is determined b
 - `x` (default: 1) - X percentage (0-1)
 - `y` (default: 1) - Y percentage (0-1)
 
+## Common Entity Attributes
+
+All entities support the following optional attributes for enhanced layout and alignment:
+
+**Layout Attributes:**
+- `align-horizontal` - Horizontal alignment within parent container
+  - Values: `center`, `left`, `right`
+- `align-vertical` - Vertical alignment within parent container  
+  - Values: `center`, `top`, `bottom`
+- `stretch-to-parent` - Whether to stretch to fit parent container
+  - Values: `true`, `false`
+
+**Standard Attributes:**
+- `tag` - Unique identifier for scripting reference
+- `id` - UUID identifier (auto-generated if not provided)
+- `on-load-event` - Script event to invoke when entity loads
+
+**Example:**
+```xml
+<entity tag="my-button" align-horizontal="center" align-vertical="top" stretch-to-parent="false">
+    <transform>
+        <position x="0" y="0" z="0" />
+        <scale x="1" y="1" z="1" />
+    </transform>
+</entity>
+```
+
 ## Mesh Entity Elements
 
 ### `<containerentity>`
@@ -486,15 +513,31 @@ An image display.
 ```
 
 ### `<textentity>`
-Text display.
+Text display with enhanced styling and alignment options.
+
+**Elements:**
+- `<color>` (optional) - Text color
 
 **Attributes:**
 - `text` (required) - Text content to display
 - `font-size` (required) - Font size
+- `fonts` (optional) - Font family name
+- `bold` (optional) - Whether text should be bold (true/false)
+- `italic` (optional) - Whether text should be italic (true/false)
+- `underline` (optional) - Whether text should be underlined (true/false)
+- `strikethrough` (optional) - Whether text should have strikethrough (true/false)
+- `text-align-horizontal` (optional) - Horizontal text alignment (center, left, right)
+- `text-align-vertical` (optional) - Vertical text alignment (center, top, bottom)
+- `text-wrap` (optional) - Text wrapping behavior (no-wrap, wrap)
+- `align-horizontal` (optional) - Entity horizontal alignment (center, left, right)
+- `align-vertical` (optional) - Entity vertical alignment (center, top, bottom)
+- `stretch-to-parent` (optional) - Whether to stretch to fit parent container (true/false)
 
 **Example:**
 ```xml
-<textentity text="Hello World!" font-size="0.1">
+<textentity text="Hello World!" font-size="0.1" fonts="Arial" bold="true" 
+           text-align-horizontal="center" align-horizontal="center">
+    <color>red</color>
 </textentity>
 ```
 
@@ -514,14 +557,21 @@ HTML content display.
 ## Interactive Entity Elements
 
 ### `<buttonentity>`
-An interactive button.
+An interactive button with enhanced styling and alignment options.
+
+**Elements:**
+- `<color>` (optional) - Button color
 
 **Attributes:**
 - `on-click-event` (optional) - Script event when clicked
+- `align-horizontal` (optional) - Entity horizontal alignment (center, left, right)
+- `align-vertical` (optional) - Entity vertical alignment (center, top, bottom)
+- `stretch-to-parent` (optional) - Whether to stretch to fit parent container (true/false)
 
 **Example:**
 ```xml
-<buttonentity on-click-event="buttonClicked">
+<buttonentity on-click-event="buttonClicked" align-horizontal="center">
+    <color>blue</color>
     <transform>
         <position x="0" y="0" z="0" />
         <rotation x="0" y="0" z="0" w="1" />
@@ -529,7 +579,7 @@ An interactive button.
     </transform>
     <entity>
         <cubemeshentity>
-            <color>blue</color>
+            <color>lightblue</color>
         </cubemeshentity>
     </entity>
 </buttonentity>

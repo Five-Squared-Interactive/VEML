@@ -381,6 +381,11 @@
 	<annotation>
 		<documentation>
 			A transform for an entity placed on a canvas represented by a position-percent and size-percent
+			
+			Attributes:
+			- align-horizontal: horizontal alignment (center, left, right)
+			- align-vertical:   vertical alignment (center, top, bottom)
+			- stretch-to-parent: whether to stretch this entity to fit its parent
 		</documentation>
 	</annotation>
 	<complexType name="canvastransform">
@@ -390,6 +395,25 @@
 					<element name="position-percent" type="vem:position-percent" minOccurs="1" maxOccurs="1"></element>
 					<element name="size-percent" type="vem:size-percent" minOccurs="1" maxOccurs="1"></element>
 				</sequence>
+				<attribute name="align-horizontal" use="optional">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="center"/>
+							<enumeration value="left"/>
+							<enumeration value="right"/>
+						</restriction>
+					</simpleType>
+				</attribute>
+				<attribute name="align-vertical" use="optional">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="center"/>
+							<enumeration value="top"/>
+							<enumeration value="bottom"/>
+						</restriction>
+					</simpleType>
+				</attribute>
+				<attribute name="stretch-to-parent" type="boolean" use="optional"></attribute>
 			</extension>
 		</complexContent>
 	</complexType>
@@ -761,6 +785,7 @@
 			A button entity. Inherits all elements and attributes from entity and includes:
 			Attributes:
 			- on-click-event: An event to invoke upon clicking of the button.
+			- color: Color to give the button entity.
 
 			Note: Must be placed within a Canvas Entity.
 		</documentation>
@@ -769,9 +794,9 @@
 		<complexContent>
 			<extension base="vem:entity">
 				<sequence>
-
 				</sequence>
 				<attribute name="on-click-event" type="string" use="optional"></attribute>
+				<attribute name="color" type="string" use="optional"></attribute>
 			</extension>
 		</complexContent>
 	</complexType>
@@ -894,6 +919,15 @@
 			Attributes:
 			- text:      Text to place on the text entity.
 			- font-size: Size to apply to the text entity's font.
+			- font:      Font family to use for the text entity.
+			- color:     Color to give the text entity.
+			- bold:      Whether the text should be bold.
+			- italic:    Whether the text should be italic.
+			- underline: Whether the text should be underlined.
+			- strikethrough: Whether the text should have strikethrough.
+			- text-align-horizontal: Horizontal text alignment (center, left, right).
+			- text-align-vertical: Vertical text alignment (center, top, bottom).
+			- text-wrap: Text wrapping behavior (no-wrap, wrap).
 
 			Note: Must be placed within a Canvas Entity.
 		</documentation>
@@ -902,10 +936,41 @@
 		<complexContent>
 			<extension base="vem:entity">
 				<sequence>
-
 				</sequence>
 				<attribute name="text" type="string" use="required"></attribute>
 				<attribute name="font-size" type="float" use="required"></attribute>
+				<attribute name="font" type="string" use="optional"></attribute>
+				<attribute name="color" type="string" use="optional"></attribute>
+				<attribute name="bold" type="boolean" use="optional"></attribute>
+				<attribute name="italic" type="boolean" use="optional"></attribute>
+				<attribute name="underline" type="boolean" use="optional"></attribute>
+				<attribute name="strikethrough" type="boolean" use="optional"></attribute>
+				<attribute name="text-align-horizontal" use="optional">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="center"/>
+							<enumeration value="left"/>
+							<enumeration value="right"/>
+						</restriction>
+					</simpleType>
+				</attribute>
+				<attribute name="text-align-vertical" use="optional">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="center"/>
+							<enumeration value="top"/>
+							<enumeration value="bottom"/>
+						</restriction>
+					</simpleType>
+				</attribute>
+				<attribute name="text-wrap" use="optional">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="no-wrap"/>
+							<enumeration value="wrap"/>
+						</restriction>
+					</simpleType>
+				</attribute>
 			</extension>
 		</complexContent>
 	</complexType>

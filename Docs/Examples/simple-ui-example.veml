@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<veml xmlns="http://www.fivesqd.com/schemas/veml/3.0">
+    <metadata>
+        <title>Simple UI Enhancements Example</title>
+    </metadata>
+    <environment>
+        <background>
+            <color>lightgray</color>
+        </background>
+        
+        <!-- Simple Canvas with enhanced UI elements -->
+        <entity tag="simple-ui">
+            <transform>
+                <position x="0" y="0" z="0" />
+                <scale x="1" y="1" z="1" />
+            </transform>
+            <entity>
+                <canvasentity>
+                    
+                    <!-- Centered header with styling -->
+                    <entity tag="header">
+                        <transform align-horizontal="center" align-vertical="top">
+                            <position-percent x="0.5" y="0.8" />
+                            <size-percent x="0.6" y="0.15" />
+                        </transform>
+                        <entity>
+                            <textentity text="Welcome!" font-size="0.12" font="Arial" 
+                                       bold="true" text-align-horizontal="center" color="darkblue">
+                            </textentity>
+                        </entity>
+                    </entity>
+                    
+                    <!-- Styled description text -->
+                    <entity tag="description">
+                        <transform align-horizontal="center">
+                            <position-percent x="0.5" y="0.6" />
+                            <size-percent x="0.8" y="0.15" />
+                        </transform>
+                        <entity>
+                            <textentity text="This demonstrates the new text styling features including bold, italic, and color support." 
+                                       font-size="0.06" italic="true" text-wrap="wrap"
+                                       text-align-horizontal="center" color="darkgreen">
+                            </textentity>
+                        </entity>
+                    </entity>
+                    
+                    <!-- Colored button with alignment -->
+                    <entity tag="action-button">
+                        <transform align-horizontal="center">
+                            <position-percent x="0.5" y="0.4" />
+                            <size-percent x="0.3" y="0.1" />
+                        </transform>
+                        <entity>
+                            <buttonentity on-click-event="handleAction" color="orange">
+                                <entity>
+                                    <textentity text="Click Here" font-size="0.08" 
+                                               bold="true" text-align-horizontal="center" color="white">
+                                    </textentity>
+                                </entity>
+                            </buttonentity>
+                        </entity>
+                    </entity>
+                    
+                    <!-- Stretched footer text -->
+                    <entity tag="footer">
+                        <transform stretch-to-parent="true" align-vertical="bottom">
+                            <position-percent x="0.1" y="0.1" />
+                            <size-percent x="0.8" y="0.08" />
+                        </transform>
+                        <entity>
+                            <textentity text="Footer text with underline" font-size="0.05" 
+                                       underline="true" text-align-horizontal="center" color="gray">
+                            </textentity>
+                        </entity>
+                    </entity>
+                    
+                </canvasentity>
+            </entity>
+        </entity>
+        
+    </environment>
+</veml>

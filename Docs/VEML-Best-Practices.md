@@ -286,6 +286,46 @@ Organize your scene hierarchically with clear groupings:
 </entity>
 ```
 
+### Enhanced UI Styling and Layout
+The latest VEML version includes enhanced styling and alignment options for UI elements:
+
+#### Text Entity Enhancements
+```xml
+<!-- Rich text with styling -->
+<textentity text="Styled Header" font-size="0.15" fonts="Arial" 
+           bold="true" text-align-horizontal="center" 
+           align-horizontal="center" align-vertical="top">
+    <color>#2E86C1</color>
+</textentity>
+
+<!-- Wrapped text with custom alignment -->
+<textentity text="This is a longer text that will wrap nicely" 
+           font-size="0.08" italic="true" text-wrap="wrap"
+           text-align-horizontal="left" stretch-to-parent="true">
+    <color>darkgreen</color>
+</textentity>
+```
+
+#### Button Entity Enhancements
+```xml
+<!-- Colored button with center alignment -->
+<buttonentity on-click-event="handleClick" align-horizontal="center">
+    <color>#E74C3C</color>
+    <entity>
+        <textentity text="Click Me!" font-size="0.1" bold="true">
+            <color>white</color>
+        </textentity>
+    </entity>
+</buttonentity>
+```
+
+#### Best Practices for Enhanced UI
+- Use `align-horizontal` and `align-vertical` for consistent layouts
+- Set `stretch-to-parent="true"` for responsive design
+- Combine text styling flags (`bold`, `italic`, `underline`) judiciously
+- Use `text-wrap="wrap"` for longer text content
+- Choose appropriate `fonts` for your target platform
+
 ## Scripting Integration
 
 ### Script Organization
