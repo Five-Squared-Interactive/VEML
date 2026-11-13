@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.fivesqd.com/schemas/veml/4.0"
+    elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:vem="http://www.fivesqd.com/schemas/veml/4.0"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace">
+
+	<import namespace="http://www.w3.org/XML/1998/namespace"
+	    schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+	<annotation>
+		<documentation>
+			VEML 4.0 document grammar. THIS SCHEMA IS THE SOURCE OF TRUTH for
+			document structure: elements, attributes, types, defaults, and
+			cardinality. Generated views (types, element tables) derive from it.
+
+			Behavioral semantics live in veml-4.0-draft.md and cannot be
+			expressed here: the tolerance rule and error recovery (§2), the
+			scheme allowlist and DTD prohibition (§1.4), fetch eligibility and
+			budgets (§6.2), template restrictions for href-fetched prototypes
+			(§6.4), the action bus and source restrictions (§8), capabilities
+			(§9), and conformance levels (§10). Where the prose describes
+			grammar, it is informative and this schema prevails; where this
+			schema is silent on behavior, the prose governs.
+
+			Validation note: shells do not hard-validate against this schema —
+			the tolerance rule means unrecognized content is ignored, never
+			fatal. The schema defines the *valid* form that authoring tools
+			emit and generated types consume.
+		</documentation>
+	</annotation>
+
+	<!-- ==================== simple types ==================== -->
+
+	<simpleType name="vec3">
+		<annotation><documentation>
+			Three space-separated doubles in one attribute: "0 1.5 -2" (§1.6).
+		</documentation></annotation>
+		<restriction>
+			<simpleType><list itemType="double"/></simpleType>
+			<length value="3"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="quat">
+		<annotation><documentation>
+			Four space-separated doubles in one attribute (x y z w) (§1.6).
+		</documentation></annotation>
+		<restriction>
+			<simpleType><list itemType="double"/></simpleType>
+			<length value="4"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="name">
+		<annotation><documentation>
+			Machine identifier: the param/placeholder grammar (§6.4) and
+			manifest key grammar (§6.3). Deliberately ASCII-only — these are
+			never presented to users, unlike action, meta, and socket names,
+			which are open.
+		</documentation></annotation>
+		<restriction base="string">
+			<pattern value="[a-z][a-z0-9\-]*"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="actionName">
+		<annotation><documentation>
+			Action or metadata name in an OPEN namespace — dot-separated by
+			convention, no character registration (§8.1, §4.9). The only
+			structural constraint is no whitespace; veml.* is reserved.
+		</documentation></annotation>
+		<restriction base="string">
+			<pattern value="\S+"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="identifier">
+		<annotation><documentation>
+			Open author-facing identifier (e.g. socket names, §4.7): any
+			non-empty string, no character registration.
+		</documentation></annotation>
+		<restriction base="string">
+			<minLength value="1"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="versionNumber">
+		<annotation><documentation>
+			major.minor, e.g. "4.0" (§3). Unknown versions get §2 best
+			effort; the empty string is not a version.
+		</documentation></annotation>
+		<restriction base="string">
+			<pattern value="[0-9]+\.[0-9]+"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="color">
+		<annotation><documentation>
+			#rgb | #rrggbb | #rrggbbaa | color(r g b a) with components 0-1 |
+			case-insensitive named color (§4.5).
+		</documentation></annotation>
+		<restriction base="string"/>
+	</simpleType>
+
+	<simpleType name="shape">
+		<restriction base="string">
+			<enumeration value="cube"/>
+			<enumeration value="sphere"/>
+			<enumeration value="capsule"/>
+			<enumeration value="cylinder"/>
+			<enumeration value="plane"/>
+			<enumeration value="torus"/>
+			<enumeration value="cone"/>
+			<enumeration value="rectangular-pyramid"/>
+			<enumeration value="tetrahedron"/>
+			<enumeration value="prism"/>
+			<enumeration value="arch"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="modes">
+		<annotation><documentation>
+			Preference-ordered, space-separated locomotion modes from the open
+			set walk / fly / teleport / examine / none; unrecognized names
+			follow the tolerance rule (§5.1).
+		</documentation></annotation>
+		<restriction base="NMTOKENS"/>
+	</simpleType>
+
+	<simpleType name="nonNegativeDouble">
+		<annotation><documentation>
+			A double ≥ 0 (§5.2 locomotion magnitudes). Out-of-range values in
+			a processed document follow the tolerance rule: warn, attribute
+			treated as absent (§5.2).
+		</documentation></annotation>
+		<restriction base="double">
+			<minInclusive value="0"/>
+		</restriction>
+	</simpleType>
+
+	<!-- ==================== vector child elements ==================== -->
+
+	<complexType name="vec3zero">
+		<annotation><documentation>x/y/z, defaulting 0 (§1.6, §4.2).</documentation></annotation>
+		<attribute name="x" type="double" default="0"/>
+		<attribute name="y" type="double" default="0"/>
+		<attribute name="z" type="double" default="0"/>
+	</complexType>
+
+	<complexType name="vec3one">
+		<annotation><documentation>x/y/z, defaulting 1 (scale, §4.2).</documentation></annotation>
+		<attribute name="x" type="double" default="1"/>
+		<attribute name="y" type="double" default="1"/>
+		<attribute name="z" type="double" default="1"/>
+	</complexType>
+
+	<complexType name="quaternion">
+		<annotation><documentation>Identity by default (§4.2).</documentation></annotation>
+		<attribute name="x" type="double" default="0"/>
+		<attribute name="y" type="double" default="0"/>
+		<attribute name="z" type="double" default="0"/>
+		<attribute name="w" type="double" default="1"/>
+	</complexType>
+
+	<complexType name="vec3required">
+		<annotation><documentation>
+			x/y/z, all required — used where a default of 0 would be
+			degenerate (transform size, §4.2).
+		</documentation></annotation>
+		<attribute name="x" type="double" use="required"/>
+		<attribute name="y" type="double" use="required"/>
+		<attribute name="z" type="double" use="required"/>
+	</complexType>
+
+	<complexType name="transform">
+		<annotation><documentation>
+			Absent transform = identity. size = uniform-fit target extent in
+			meters (§4.2); scale and size are mutually exclusive.
+		</documentation></annotation>
+		<sequence>
+			<element name="position" type="vem:vec3zero" minOccurs="0"/>
+			<element name="rotation" type="vem:quaternion" minOccurs="0"/>
+			<choice minOccurs="0">
+				<element name="scale" type="vem:vec3one"/>
+				<element name="size" type="vem:vec3required"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<!-- ==================== entity family ==================== -->
+
+	<complexType name="entity">
+		<annotation><documentation>
+			Base composition node (§4.1). Subtypes inherit this full child
+			set. id is a UUID the shell generates when absent; on-load fires
+			when the entity's EAGER content (including eager instance
+			expansion) finishes loading — deferred content does not gate it,
+			and it never fires before the script gate (§4.1, §8.3).
+		</documentation></annotation>
+		<sequence>
+			<element name="transform" type="vem:transform" minOccurs="0"/>
+			<element name="bounds" type="vem:bounds" minOccurs="0"/>
+			<element name="meta" type="vem:meta" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="placement-socket" type="vem:placementsocket" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="synchronizer" type="vem:synchronizer" minOccurs="0"/>
+			<element name="link" type="vem:link" minOccurs="0"/>
+			<element name="include" type="vem:include" minOccurs="0"/>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="entity" type="vem:entity"/>
+				<element name="container" type="vem:container"/>
+				<element name="asset" type="vem:asset"/>
+				<element name="primitive" type="vem:primitive"/>
+				<element name="html" type="vem:html"/>
+				<element name="lod" type="vem:lod"/>
+				<element name="instance" type="vem:instance"/>
+			</choice>
+		</sequence>
+		<attribute name="tag" type="string" use="optional"/>
+		<attribute name="id" type="string" use="optional"/>
+		<attribute name="on-load" type="vem:actionName" use="optional"/>
+	</complexType>
+
+	<complexType name="container">
+		<annotation><documentation>Grouping only (§4.3).</documentation></annotation>
+		<complexContent>
+			<extension base="vem:entity"/>
+		</complexContent>
+	</complexType>
+
+	<complexType name="asset">
+		<annotation><documentation>
+			External renderable content — the only way external geometry
+			enters a world (§4.4). type resolution: explicit, then Content-Type, then
+			extension. Failure (fetch, integrity, unknown type) renders a
+			bounding placeholder.
+		</documentation></annotation>
+		<complexContent>
+			<extension base="vem:entity">
+				<attribute name="src" type="anyURI" use="required"/>
+				<attribute name="type" type="string" use="optional"/>
+				<attribute name="integrity" type="string" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="primitive">
+		<annotation><documentation>
+			Unit (1 m) bounding cube at default scale, centered at origin;
+			absent color = shell neutral material (§4.5).
+		</documentation></annotation>
+		<complexContent>
+			<extension base="vem:entity">
+				<attribute name="shape" type="vem:shape" use="required"/>
+				<attribute name="color" type="vem:color" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="html">
+		<annotation><documentation>
+			Sandboxed browsing context on a quad in local XY, facing +Z, sized
+			by the transform's size (default 1 m square). No world capability
+			crosses the boundary; on-message names the action fired when the
+			page posts a message (§4.6).
+		</documentation></annotation>
+		<complexContent>
+			<extension base="vem:entity">
+				<attribute name="url" type="anyURI" use="required"/>
+				<attribute name="on-message" type="vem:actionName" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lod">
+		<annotation><documentation>
+			Distance-selected representations (§4.10). Non-level children
+			render distance-independently. Levels ascend by range; exactly one
+			level is active; non-distance shells render the first non-empty
+			level.
+		</documentation></annotation>
+		<complexContent>
+			<extension base="vem:entity">
+				<sequence>
+					<element name="level" type="vem:level" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="level">
+		<annotation><documentation>
+			range (meters) defaults 0 on the first level, required after; an
+			empty level = render nothing beyond this distance (§4.10).
+		</documentation></annotation>
+		<choice minOccurs="0" maxOccurs="unbounded">
+			<element name="entity" type="vem:entity"/>
+			<element name="container" type="vem:container"/>
+			<element name="asset" type="vem:asset"/>
+			<element name="primitive" type="vem:primitive"/>
+			<element name="html" type="vem:html"/>
+			<element name="lod" type="vem:lod"/>
+			<element name="instance" type="vem:instance"/>
+		</choice>
+		<attribute name="range" type="double" use="optional"/>
+	</complexType>
+
+	<complexType name="placementsocket">
+		<annotation><documentation>
+			Named attachment affordance; no behavior (§4.7). name is the
+			socket's author-facing identifier — how assembling shells
+			reference it.
+		</documentation></annotation>
+		<attribute name="name" type="vem:identifier" use="required"/>
+		<attribute name="position" type="vem:vec3" use="optional"/>
+		<attribute name="rotation" type="vem:quat" use="optional"/>
+		<attribute name="connecting-offset" type="vem:vec3" use="optional"/>
+	</complexType>
+
+	<complexType name="bounds">
+		<annotation><documentation>
+			Author-declared AABB, local space, meters. Deferral only, never
+			visibility (§4.8).
+		</documentation></annotation>
+		<attribute name="center" type="vem:vec3" default="0 0 0"/>
+		<attribute name="size" type="vem:vec3" use="required"/>
+	</complexType>
+
+	<complexType name="meta">
+		<annotation><documentation>
+			Entity metadata: ignored for rendering, preserved on
+			re-serialization, read by indexers (§4.9).
+		</documentation></annotation>
+		<attribute name="name" type="vem:actionName" use="required"/>
+		<attribute name="content" type="string" use="required"/>
+	</complexType>
+
+	<complexType name="link">
+		<annotation><documentation>
+			Navigation affordance; traversal requires deliberate user action
+			(§6.1).
+		</documentation></annotation>
+		<attribute name="href" type="anyURI" use="required"/>
+		<attribute name="label" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="include">
+		<annotation><documentation>
+			Transclusion: own origin, own metadata scope, own action bus;
+			contributes entity content only (§6.2).
+		</documentation></annotation>
+		<attribute name="href" type="anyURI" use="required"/>
+		<attribute name="integrity" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="instance">
+		<annotation><documentation>
+			Prototype instantiation (§6.4). Attributes other than the reserved
+			prototype/tag/id/on-load bind parameters by name.
+		</documentation></annotation>
+		<attribute name="prototype" type="vem:name" use="required"/>
+		<anyAttribute processContents="lax"/>
+	</complexType>
+
+	<complexType name="synchronizer">
+		<annotation><documentation>
+			Opts the entity into a declared synchronization-service by its id
+			(§7).
+		</documentation></annotation>
+		<attribute name="service" type="string" use="required"/>
+	</complexType>
+
+	<!-- ==================== metadata family ==================== -->
+
+	<complexType name="metadata">
+		<annotation><documentation>Document metadata (§3.1).</documentation></annotation>
+		<sequence>
+			<element name="title" type="string"/>
+			<element name="description" type="string" minOccurs="0"/>
+			<element name="author" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="preview" type="vem:preview" minOccurs="0"/>
+			<element name="capability" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="script" type="vem:script" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="input-binding" type="vem:inputbinding" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="synchronization-service" type="vem:synchronizationservice" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="manifest" type="vem:manifest" minOccurs="0"/>
+			<element name="prototype" type="vem:prototype" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="profile" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="preview">
+		<attribute name="src" type="anyURI" use="required"/>
+	</complexType>
+
+	<complexType name="script">
+		<annotation><documentation>
+			Sandboxed behavior script (§8.3); integrity required when src is
+			cross-origin (behavioral rule, not expressible here).
+		</documentation></annotation>
+		<attribute name="src" type="anyURI" use="required"/>
+		<attribute name="integrity" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="inputbinding">
+		<annotation><documentation>
+			Shell-abstracted input to action (§8.2). Core inputs: move, look,
+			interact, use. Active in the root document only.
+		</documentation></annotation>
+		<attribute name="input" type="NMTOKEN" use="required"/>
+		<attribute name="action" type="vem:actionName" use="required"/>
+	</complexType>
+
+	<complexType name="synchronizationservice">
+		<annotation><documentation>
+			Endpoint declaration; the named protocol's own specification
+			defines the wire (§7). Declarations sharing an id form a fallback
+			group in document order — a shell uses the first whose type it
+			implements, and all members of a group name the same session.
+			address is a network endpoint: local-resource schemes are invalid
+			regardless of type (§1.4).
+		</documentation></annotation>
+		<attribute name="type" type="string" use="required"/>
+		<attribute name="address" type="anyURI" use="required"/>
+		<attribute name="id" type="string" use="required"/>
+		<attribute name="session" type="string" use="required"/>
+		<attribute name="ice-servers" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="manifest">
+		<annotation><documentation>
+			Logical-name indirection; JSON object, names → absolute http(s)
+			URIs, single-step (§6.3).
+		</documentation></annotation>
+		<attribute name="href" type="anyURI" use="required"/>
+	</complexType>
+
+	<complexType name="prototype">
+		<annotation><documentation>
+			Component declaration (§6.4): href (fetched .vemlp) XOR inline
+			param*/template — the exclusivity and the fetched-template
+			restrictions are behavioral rules in the prose. A declaration
+			carrying neither href nor a template is grammar-valid but leaves
+			its name undeclared (§6.4).
+		</documentation></annotation>
+		<sequence>
+			<element name="param" type="vem:param" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="template" type="vem:template" minOccurs="0"/>
+		</sequence>
+		<attribute name="name" type="vem:name" use="required"/>
+		<attribute name="href" type="anyURI" use="optional"/>
+		<attribute name="integrity" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="param">
+		<annotation><documentation>
+			name must not be prototype/tag/id/on-load (reserved on instance,
+			§6.4).
+		</documentation></annotation>
+		<attribute name="name" type="vem:name" use="required"/>
+		<attribute name="default" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="templateEntity">
+		<annotation><documentation>
+			The §6.4 template content model, enforced structurally: the
+			closed allowlist admits entity, container, asset, primitive,
+			lod/level, link, and the structural children — never html,
+			include, instance, synchronizer, or id (fresh ids are generated
+			per instantiation). on-load remains grammatical here; its ban in
+			HREF-FETCHED templates is behavioral (§6.4), as is the manifest:
+			source-text ban. Placeholders are valid only in string-typed
+			attributes (§6.4); parameterizing enum- or numeric-typed
+			attributes is the typed-parameters feature deferred in §12.
+		</documentation></annotation>
+		<sequence>
+			<element name="transform" type="vem:transform" minOccurs="0"/>
+			<element name="bounds" type="vem:bounds" minOccurs="0"/>
+			<element name="meta" type="vem:meta" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="placement-socket" type="vem:placementsocket" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="link" type="vem:link" minOccurs="0"/>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="entity" type="vem:templateEntity"/>
+				<element name="container" type="vem:templateContainer"/>
+				<element name="asset" type="vem:templateAsset"/>
+				<element name="primitive" type="vem:templatePrimitive"/>
+				<element name="lod" type="vem:templateLod"/>
+			</choice>
+		</sequence>
+		<attribute name="tag" type="string" use="optional"/>
+		<attribute name="on-load" type="vem:actionName" use="optional"/>
+	</complexType>
+
+	<complexType name="templateContainer">
+		<complexContent>
+			<extension base="vem:templateEntity"/>
+		</complexContent>
+	</complexType>
+
+	<complexType name="templateAsset">
+		<complexContent>
+			<extension base="vem:templateEntity">
+				<attribute name="src" type="anyURI" use="required"/>
+				<attribute name="type" type="string" use="optional"/>
+				<attribute name="integrity" type="string" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="templatePrimitive">
+		<complexContent>
+			<extension base="vem:templateEntity">
+				<attribute name="shape" type="vem:shape" use="required"/>
+				<attribute name="color" type="vem:color" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="templateLod">
+		<complexContent>
+			<extension base="vem:templateEntity">
+				<sequence>
+					<element name="level" type="vem:templateLevel" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="templateLevel">
+		<choice minOccurs="0" maxOccurs="unbounded">
+			<element name="entity" type="vem:templateEntity"/>
+			<element name="container" type="vem:templateContainer"/>
+			<element name="asset" type="vem:templateAsset"/>
+			<element name="primitive" type="vem:templatePrimitive"/>
+			<element name="lod" type="vem:templateLod"/>
+		</choice>
+		<attribute name="range" type="double" use="optional"/>
+	</complexType>
+
+	<complexType name="prototypeRoot">
+		<annotation><documentation>
+			A fetched prototype document's root (.vemlp, §6.4): param* plus a
+			required inline template; no href attribute exists here, so
+			definitions cannot chain. name is optional and ignored.
+		</documentation></annotation>
+		<sequence>
+			<element name="param" type="vem:param" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="template" type="vem:template"/>
+		</sequence>
+		<attribute name="name" type="vem:name" use="optional"/>
+	</complexType>
+
+	<complexType name="template">
+		<annotation><documentation>
+			Exactly one entity-subtype root, drawn from the restricted
+			template family above (§6.4).
+		</documentation></annotation>
+		<choice>
+			<element name="entity" type="vem:templateEntity"/>
+			<element name="container" type="vem:templateContainer"/>
+			<element name="asset" type="vem:templateAsset"/>
+			<element name="primitive" type="vem:templatePrimitive"/>
+			<element name="lod" type="vem:templateLod"/>
+		</choice>
+	</complexType>
+
+	<!-- ==================== environment family ==================== -->
+
+	<complexType name="environment">
+		<annotation><documentation>The world's content (§3.2).</documentation></annotation>
+		<sequence>
+			<element name="background" type="vem:background" minOccurs="0"/>
+			<element name="navigation" type="vem:navigation" minOccurs="0"/>
+			<element name="locomotion" type="vem:locomotion" minOccurs="0"/>
+			<element name="entry-point" type="vem:entrypoint" minOccurs="0" maxOccurs="unbounded"/>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="entity" type="vem:entity"/>
+				<element name="container" type="vem:container"/>
+				<element name="asset" type="vem:asset"/>
+				<element name="primitive" type="vem:primitive"/>
+				<element name="html" type="vem:html"/>
+				<element name="lod" type="vem:lod"/>
+				<!-- Profile vocabulary (§3.2, §10): elements a declared profile
+				     adds, in that profile's OWN namespace, among the world's
+				     content. lax: validated only where a validator has the
+				     profile's schema. ##other: never the core namespace, so
+				     this is not a hole for core-namespace junk (#293). -->
+				<any namespace="##other" processContents="lax"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="background">
+		<annotation><documentation>
+			Exactly one of color or panorama (behavioral resolution: panorama
+			wins, §3.2); absent background = shell neutral default.
+		</documentation></annotation>
+		<attribute name="color" type="vem:color" use="optional"/>
+		<attribute name="panorama" type="anyURI" use="optional"/>
+	</complexType>
+
+	<complexType name="navigation">
+		<annotation><documentation>
+			Author preference, never command (§5.1). speed multiplies
+			baselines walk 1.4 m/s, fly 5 m/s; ignored for modes without a
+			baseline.
+		</documentation></annotation>
+		<attribute name="modes" type="vem:modes" use="optional"/>
+		<attribute name="speed" type="double" default="1"/>
+		<attribute name="avatar-height" type="double" use="optional"/>
+		<attribute name="avatar-width" type="double" use="optional"/>
+	</complexType>
+
+	<complexType name="locomotion">
+		<annotation><documentation>
+			Vertical movement hints, never commands (§5.2): gravity (m/s²,
+			positive magnitude downward) and jump-height (m, apex above the
+			feet). Pace belongs to navigation's speed (§5.1). Root-document-
+			only under composition (§6.2).
+		</documentation></annotation>
+		<attribute name="gravity" type="vem:nonNegativeDouble" use="optional"/>
+		<attribute name="jump-height" type="vem:nonNegativeDouble" use="optional"/>
+	</complexType>
+
+	<complexType name="entrypoint">
+		<annotation><documentation>
+			Named arrival location (§5). id is author-chosen and unique among
+			entry points — exempt from the entity UUID rule. Facing uses the
+			rotation's yaw.
+		</documentation></annotation>
+		<sequence>
+			<element name="position" type="vem:vec3zero" minOccurs="0"/>
+			<element name="rotation" type="vem:quaternion" minOccurs="0"/>
+		</sequence>
+		<attribute name="id" type="string" use="required"/>
+		<attribute name="mode" type="NMTOKEN" use="optional"/>
+	</complexType>
+
+	<!-- ==================== roots ==================== -->
+
+	<complexType name="veml">
+		<annotation><documentation>
+			Document root (§3). The schema-valid form carries the namespace
+			declaration; a shell processing a namespace-free root inserts the
+			4.0 namespace into the infoset BEFORE any schema-based processing
+			(§1.4), and authoring tools MUST emit the declaration.
+		</documentation></annotation>
+		<sequence>
+			<element name="metadata" type="vem:metadata"/>
+			<element name="environment" type="vem:environment"/>
+		</sequence>
+		<attribute name="version" type="vem:versionNumber" use="required"/>
+		<attribute ref="xml:lang">
+			<annotation><documentation>
+				Declares the document's text language; inherits per XML 1.0
+				§2.12. Per-element granularity is deferred (§12).
+			</documentation></annotation>
+		</attribute>
+	</complexType>
+
+	<element name="veml" type="vem:veml">
+		<annotation><documentation>
+			Identity constraints below encode the prose's uniqueness and
+			LEXICAL reference errors (§5, §6.4) in the valid form —
+			resolvability is behavioral (a schema-valid instance may still
+			reference a declaration with neither href nor template, which
+			§6.4 leaves undeclared). synchronization-service ids deliberately
+			carry NO uniqueness constraint — same-id declarations form
+			fallback groups (§7).
+		</documentation></annotation>
+		<unique name="entryPointId">
+			<selector xpath="vem:environment/vem:entry-point"/>
+			<field xpath="@id"/>
+		</unique>
+		<key name="prototypeName">
+			<selector xpath="vem:metadata/vem:prototype"/>
+			<field xpath="@name"/>
+		</key>
+		<keyref name="instancePrototype" refer="vem:prototypeName">
+			<selector xpath=".//vem:instance"/>
+			<field xpath="@prototype"/>
+		</keyref>
+	</element>
+
+	<element name="prototype" type="vem:prototypeRoot">
+		<annotation><documentation>
+			Root of a fetched prototype document (.vemlp, §6.4). The type
+			enforces what the prose requires: an inline template is present,
+			no href (definitions never chain), and name is optional — a name
+			on the fetched root is ignored; the referencing declaration's is
+			authoritative.
+		</documentation></annotation>
+	</element>
+
+</schema>
